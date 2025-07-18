@@ -7,6 +7,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.List;
+
 @SpringBootApplication
 public class FirstLearnSpringApplication {
 
@@ -16,7 +18,7 @@ public class FirstLearnSpringApplication {
 	@Bean
 	public CommandLineRunner commandLineRunner(PersonDAO dao) {
 		return runner -> {
-			getData(dao);
+			updateData(dao);
 		};
 	}
 	public void saveData(PersonDAO dao){
@@ -35,5 +37,20 @@ public class FirstLearnSpringApplication {
 		int id = 1;
 		Person person = dao.getPerson(id);
 		System.out.println(person);
+	}
+	public void getAllData(PersonDAO dao){
+		List<Person> data = dao.getAllPersons();
+		for (Person person : data) {
+			System.out.println(person);
+		}
+	}
+	public void updateData(PersonDAO dao){
+		int id = 1;
+		Person myPerson = dao.getPerson(id);
+		myPerson.setFname("updatedName");
+		myPerson.setLname("updatedLastName");
+		myPerson.setAge(99);
+		dao.updatePerson(myPerson);
+		System.out.println("Updated Complete");
 	}
 }

@@ -1,9 +1,12 @@
 package com.naphat.firstLearnSpring.repository;
 import com.naphat.firstLearnSpring.entity.Person;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class PersonRepository implements PersonDAO{
@@ -32,4 +35,15 @@ public class PersonRepository implements PersonDAO{
         return entityManager.find(Person.class,id);
     }
 
+    @Override
+    public List<Person> getAllPersons() {
+        TypedQuery<Person> query =  entityManager.createQuery("from Person", Person.class);
+        return query.getResultList();
+    }
+
+    @Override
+    @Transactional
+    public void updatePerson(Person person) {
+        entityManager.merge(person);
+    }
 }
